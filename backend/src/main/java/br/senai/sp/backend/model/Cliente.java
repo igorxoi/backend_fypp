@@ -27,8 +27,7 @@ public class Cliente {
 	@OneToOne
 	private Endereco enderecos;
 	
-	
-	
+
 	public Endereco getEnderecos() {
 		return enderecos;
 	}

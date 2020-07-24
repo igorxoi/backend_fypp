@@ -23,7 +23,6 @@ public class Portfolio {
 	private String nome;
 	private String descricao;
 	private Long id_fotografo;
-//	private Long id_foto;
 	
 	@OneToMany
 	private List<FotoPortfolio> fotoPortfolios;
@@ -67,16 +66,4 @@ public class Portfolio {
 	public void setId_fotografo(Long id_fotografo) {
 		this.id_fotografo = id_fotografo;
 	}
-
-//	public Long getId_foto() {
-//		return id_foto;
-//	}
-//
-//	public void setId_foto(Long id_foto) {
-//		this.id_foto = id_foto;
-//	}
-//	
-	
-	
-
 }

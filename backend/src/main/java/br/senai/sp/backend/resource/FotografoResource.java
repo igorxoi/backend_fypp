@@ -144,7 +144,7 @@ public class FotografoResource {
 		fotografoToken.setFotoPerfil(fotografo.getFotoPerfil());
 		fotografoToken.setId(fotografo.getId());
 		fotografoToken.setEnderecos(fotografo.getEnderecos());
-		fotografoToken.setPortfolios(fotografo.getPortfolios());
+		//fotografoToken.setPortfolios(fotografo.getPortfolios());
 		fotografoToken.setSenha(fotografo.getSenha());
 		fotografoToken.setTelefone(fotografo.getTelefone());
 		fotografoToken.setSenha(fotografo.getSenha());

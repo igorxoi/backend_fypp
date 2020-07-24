@@ -54,6 +54,8 @@ public class Fotografo {
 	@OneToOne
 	private Endereco enderecos;
 	
+	@OneToMany
+	private List<Agenda> agenda;
 	
 	public Endereco getEnderecos() {
 		return enderecos;
@@ -176,6 +178,16 @@ public class Fotografo {
 	public void setData_nascimento(String data_nascimento) {
 		this.data_nascimento = data_nascimento;
 	}
+
+	public List<Agenda> getAgenda() {
+		return agenda;
+	}
+
+	public void setAgenda(List<Agenda> agenda) {
+		this.agenda = agenda;
+	}
+
+	
 
 	
 	

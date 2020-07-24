@@ -10,7 +10,10 @@ import br.senai.sp.backend.model.Fotografo;
 import br.senai.sp.backend.model.Portfolio;
 
 public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
- 
-	@Query(value = "select * from tbl_portfolio p where p.id_fotografo =?1", nativeQuery = true)
-	List<Portfolio> portfoliosFotografo(@Param("id_fotografo") Long id_fotografo);
+	 
+	@Query(value = "select * from tbl_portfolio p where p.id =?1", nativeQuery = true)
+	Portfolio portfoliosFotografo(@Param("id") Long id_fotografo);
+	
+	@Query(value = "select * from tbl_portfolio p where p.id =?1", nativeQuery = true)
+	List<Portfolio> portfolioPorId(@Param("id") Long id_fotografo);
 }

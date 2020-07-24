@@ -67,6 +67,7 @@ public class FotoPortfolioResource {
 		List<String> roles = new ArrayList<>();
 		fotoPortfolioToken.setNome(foto.getNome());
 		fotoPortfolioToken.setDescricao(foto.getDescricao());
+		fotoPortfolioToken.setId(foto.getId());
 		fotoPortfolioToken.setUrl(foto.getUrl());
 
 		return fotoPortfolioToken;

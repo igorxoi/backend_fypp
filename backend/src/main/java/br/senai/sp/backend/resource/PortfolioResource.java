@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,13 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 import br.senai.sp.backend.dto.FotoPortfolioToken;
 import br.senai.sp.backend.dto.PortfolioToken;
 import br.senai.sp.backend.model.Cliente;
+import br.senai.sp.backend.model.Fotografo;
 import br.senai.sp.backend.model.Portfolio;
 import br.senai.sp.backend.repository.PortfolioRepository;
 import br.senai.sp.backend.security.JwtAuthService;
 
 @RestController
 @RequestMapping("/photo")
-
 @CrossOrigin
 public class PortfolioResource {
 
@@ -49,15 +51,20 @@ public class PortfolioResource {
 	
 	//listar todos os portfolios de um fotografo
 	//listar todos os portfolios de um fotografo
-	@RequestMapping(method = RequestMethod.GET, value = "portfolios/{id_fotografo}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Portfolio> getportfolioFotografo(@PathVariable(value = "id_fotografo") Long id_fotografo) {
-		if(portfolioRepository.portfoliosFotografo(id_fotografo) != null) {
-			return portfolioRepository.portfoliosFotografo(id_fotografo);
-		}else {
-			System.out.println("vaziaa");
-		}
-		
-		return portfolioRepository.portfoliosFotografo(id_fotografo);
+//	@RequestMapping(method = RequestMethod.GET, value = "portfolios/{id_fotografo}", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public List<Portfolio> getportfolioFotografo(@PathVariable(value = "id_fotografo") Long id_fotografo) {
+//		if(portfolioRepository.portfoliosFotografo(id_fotografo) != null) {
+//			return portfolioRepository.portfoliosFotografo(id_fotografo);
+//		}else {
+//			System.out.println("vaziaa");
+//		}
+//		
+//		return portfolioRepository.portfoliosFotografo(id_fotografo);
+//	}
+	
+	@GetMapping("/portfolios/{id}")
+	public Portfolio getPortfolio(@PathVariable(value = "id") Long id) {
+		return portfolioRepository.portfoliosFotografo(id);
 	}
 	
 	//criar portfolio
@@ -80,4 +87,14 @@ public class PortfolioResource {
 		
 		return portfolioToken;
 }
+	
+	// update no portfolios adicionando só as fotos
+	
+		@PutMapping("/portfolio/{id}")
+		public ResponseEntity<Portfolio>atualizar(@PathVariable Long id, @Valid @RequestBody Portfolio portfolio){
+			Portfolio portfolioAtual = portfolioRepository.findById(id).get();
+			BeanUtils.copyProperties(portfolio, portfolioAtual, "id");
+			portfolioRepository.save(portfolioAtual);
+			return ResponseEntity.ok(portfolioAtual);
+		}
 }

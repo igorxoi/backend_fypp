@@ -34,6 +34,12 @@ import br.senai.sp.backend.security.JwtAuthService;
 public class Authentication {
 	
 	@Autowired
+    private FotografoRepository fotografoRepository;
+    
+    @Autowired
+    private ClienteRepository clienteRepository;
+	
+	@Autowired
 	private ClienteRepositoryAuth clienteRepositoryAuth;
 	
 	@Autowired
@@ -45,12 +51,6 @@ public class Authentication {
 	@Autowired()
 	private AuthenticationManager authManager;
 	
-	@Autowired
-	private FotografoRepository fotografoRepository;
-	
-	@Autowired
-	private ClienteRepository clienteRepository;
-	
 	//autenticação de cliente
 	@PostMapping("/auth/cliente/login")
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -60,20 +60,23 @@ public class Authentication {
 		try {
 			UsernamePasswordAuthenticationToken cliente = new UsernamePasswordAuthenticationToken(credential.getEmail(), credential.getSenha());
 		authManager.authenticate(cliente);
-		List<String> roles = new ArrayList<>();
+		List<String> roles = new ArrayList<>()
+				;
 		Cliente clienteLogin = new Cliente();
+		Cliente clienteDados = clienteRepository.findByEmail(credential.getEmail()); 
 		clienteLogin = clienteRepositoryAuth.findByEmail(credential.getEmail());
+		
 		roles.add(clienteLogin.getRole());
+		
 		String token =  jwtAuthService.createToken(credential.getEmail(), roles) ;
 		Map<Object, Object> jsonResponse = new HashMap<>();
-		Cliente clienteDados = clienteRepository.findByEmail(credential.getEmail());		
-		jsonResponse.put("nome", clienteDados.getNome());
-		jsonResponse.put("id", clienteDados.getId());
-		jsonResponse.put("foto_perfil", clienteDados.getFotoPerfil());
 		
 		jsonResponse.put("email", credential.getEmail());
 		jsonResponse.put("token", token);
-		//System.out.println(token);
+		jsonResponse.put("nome", clienteDados.getNome());
+        jsonResponse.put("id", clienteDados.getId());
+        jsonResponse.put("foto_perfil", clienteDados.getFotoPerfil());
+			
 		return ResponseEntity.ok(jsonResponse);
 		}catch (Exception e) {
 			System.out.println(e);
@@ -90,19 +93,22 @@ public class Authentication {
 		try {
 			UsernamePasswordAuthenticationToken fotografo = new UsernamePasswordAuthenticationToken(credentialFotografo.getEmail(), credentialFotografo.getSenha());
 		authManager.authenticate(fotografo);
+		
 		List<String> roles = new ArrayList<>();
+		
 		Fotografo fotografoLogin = new Fotografo();
+		Fotografo fotografoDados = fotografoRepository.findByEmail(credentialFotografo.getEmail());     
 		fotografoLogin = fotografoRepositoryAuth.findByEmail(credentialFotografo.getEmail());
+		
 		roles.add(fotografoLogin.getRole());
+		
 		String token =  jwtAuthService.createToken(credentialFotografo.getEmail(), roles) ;
 		Map<Object, Object> jsonResponse = new HashMap<>();
-		Fotografo fotografoDados = fotografoRepository.findByEmail(credentialFotografo.getEmail());		
-		jsonResponse.put("nome", fotografoDados.getNome());
-		jsonResponse.put("id", fotografoDados.getId());
-		jsonResponse.put("foto_perfil", fotografoDados.getFotoPerfil());
-		
 		jsonResponse.put("email", credentialFotografo.getEmail());
 		jsonResponse.put("token", token);
+		jsonResponse.put("nome", fotografoDados.getNome());
+        jsonResponse.put("id", fotografoDados.getId());
+        jsonResponse.put("foto_perfil", fotografoDados.getFotoPerfil());
 		//System.out.println(token);
 		return ResponseEntity.ok(jsonResponse);
 		}catch (Exception e) {			

@@ -66,7 +66,7 @@ public class ClienteResource {
 		
 		Cliente novoCliente = new Cliente();
 		cliente.setSenha(encodedPassword);
-		//System.out.println(novoCliente.getSenha());
+
 		novoCliente= clienteRepository.save(cliente);
 		
 		ClienteToken clienteToken = new ClienteToken();
